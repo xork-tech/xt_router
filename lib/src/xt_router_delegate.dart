@@ -42,7 +42,7 @@ class XtRouterDelegate<T> extends RouterDelegate<RouteInformation>
   GlobalKey<NavigatorState> get navigatorKey => _keys[selectedRoute]!;
 
   @override
-  Future<void> setNewRoutePath(RouteInformation routeInformation) async {}
+  Future<void> setNewRoutePath(RouteInformation configuration) async {}
 
   @override
   RouteInformation? get currentConfiguration {

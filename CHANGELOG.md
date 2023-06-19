@@ -1,3 +1,3 @@
-## 0.0.1
+## 0.1.0
 
-* TODO: Describe initial release.
+* Release simple wrapper over RouterDelegate with support nesten navigation in bottom navigation bar
