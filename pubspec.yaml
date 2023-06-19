@@ -1,7 +1,7 @@
 name: xt_router
 description: Simple and powerful router for Flutter
 version: 0.1.0
-homepage:
+homepage: https://github.com/xork-tech/xt_router.git
 
 environment:
   sdk: '>=3.0.3 <4.0.0'
