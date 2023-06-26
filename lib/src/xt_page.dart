@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 class XtPage<T> extends Page<T> {
   final Widget child;
 
+  // handle back button
+  final bool Function()? onWillPop;
+
   //show bottom navigation bar if it available
   final bool canBottomNavigationBar;
 
@@ -25,6 +28,7 @@ class XtPage<T> extends Page<T> {
     this.fullscreenDialog = false,
     this.allowSnapshotting = true,
     this.canBottomNavigationBar = true,
+    this.onWillPop,
   });
 
   @override

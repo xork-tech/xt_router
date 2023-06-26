@@ -1,6 +1,6 @@
 name: xt_router
-description: Simple and powerful router for Flutter
-version: 0.1.0
+description: xt_router a powerful library implementing a Navigator 2.0. The router provides efficient routing capabilities, allowing you to handle complex navigation flows effortlessly.
+version: 0.2.0
 homepage: https://github.com/xork-tech/xt_router.git
 
 environment:
