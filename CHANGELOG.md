@@ -1,6 +1,10 @@
+## 0.3.0
+
+* Fixed missed hero controller issue
+
 ## 0.2.0
 
-* Added the ability to control the transition back through callback onWillPop in `XtPage`
+* Added the ability to control the transition back through callback `onWillPop` in `XtPage`
 * Fixed steal focus in `Navigator` when we have multiply navigation stack with `Offstage`
 
 ## 0.1.0

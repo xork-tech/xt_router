@@ -109,24 +109,27 @@ class XtRouterDelegate<T> extends RouterDelegate<RouteInformation>
           for (final entry in _pageStacks.entries)
             Offstage(
               offstage: entry.key != _selectedRoute,
-              child: Navigator(
-                key: _keys[entry.key]!,
-                requestFocus: entry.key == _selectedRoute,
-                pages: [...entry.value],
-                onPopPage: (route, result) {
-                  if (entry.value.last.onWillPop != null &&
-                      !entry.value.last.onWillPop!.call()) {
-                    return entry.value.last.onWillPop!.call();
-                  }
-                  if (!route.didPop(result)) {
-                    return false;
-                  }
-                  if (_pageStacks[_selectedRoute]!.length > 1) {
-                    _pageStacks[_selectedRoute]?.removeLast();
-                  }
-                  notifyListeners();
-                  return true;
-                },
+              child: HeroControllerScope(
+                controller: MaterialApp.createMaterialHeroController(),
+                child: Navigator(
+                  key: _keys[entry.key]!,
+                  requestFocus: entry.key == _selectedRoute,
+                  pages: [...entry.value],
+                  onPopPage: (route, result) {
+                    if (entry.value.last.onWillPop != null &&
+                        !entry.value.last.onWillPop!.call()) {
+                      return entry.value.last.onWillPop!.call();
+                    }
+                    if (!route.didPop(result)) {
+                      return false;
+                    }
+                    if (_pageStacks[_selectedRoute]!.length > 1) {
+                      _pageStacks[_selectedRoute]?.removeLast();
+                    }
+                    notifyListeners();
+                    return true;
+                  },
+                ),
               ),
             ),
         ],
