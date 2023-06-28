@@ -101,6 +101,20 @@ class XtRouterDelegate<T> extends RouterDelegate<RouteInformation>
   }
 
   @override
+  Future<bool> popRoute() async {
+    final overlayContext = navigatorKey.currentState?.overlay?.context;
+    if (overlayContext != null) {
+      final navigatorState = Navigator.of(overlayContext, rootNavigator: true);
+
+      if (navigatorState.canPop()) {
+        navigatorState.pop();
+        return true;
+      }
+    }
+    return super.popRoute();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final navBar = currentPageStack.last.canBottomNavigationBar ? _bottomNavBarBuilder(context, _selectedRoute) : null;
 
@@ -143,7 +157,11 @@ class XtRouterDelegate<T> extends RouterDelegate<RouteInformation>
         ),
       ],
       onPopPage: (route, result) {
-        return false;
+        if (!route.didPop(result)) {
+          return false;
+        }
+        _rootNavigatorKey.currentState?.pop();
+        return true;
       },
     );
   }

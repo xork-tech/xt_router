@@ -1,3 +1,7 @@
+## 0.5.0
+
+* Fixed back button on android in modal page with root navigator
+
 ## 0.4.0
 
 * Added root navigator
