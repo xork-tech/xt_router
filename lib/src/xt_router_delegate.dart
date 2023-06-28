@@ -6,6 +6,7 @@ class XtRouterDelegate<T> extends RouterDelegate<RouteInformation>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RouteInformation> {
   final Map<T, GlobalKey<NavigatorState>> _keys;
   late final Map<T, List<XtPage>> _pageStacks;
+  final _rootNavigatorKey = GlobalKey<NavigatorState>();
   final Widget? Function(BuildContext, T) _bottomNavBarBuilder;
 
   T _selectedRoute;
@@ -28,6 +29,8 @@ class XtRouterDelegate<T> extends RouterDelegate<RouteInformation>
   List<XtPage> getPageStack(T route) => _pageStacks[route]!;
 
   T get selectedRoute => _selectedRoute;
+
+  GlobalKey<NavigatorState> get rootNavigatorKey => _rootNavigatorKey;
 
   set selectedRoute(T route) {
     if (_selectedRoute == route && currentPageStack.isNotEmpty) {
@@ -99,42 +102,49 @@ class XtRouterDelegate<T> extends RouterDelegate<RouteInformation>
 
   @override
   Widget build(BuildContext context) {
-    final navBar = currentPageStack.last.canBottomNavigationBar
-        ? _bottomNavBarBuilder(context, _selectedRoute)
-        : null;
+    final navBar = currentPageStack.last.canBottomNavigationBar ? _bottomNavBarBuilder(context, _selectedRoute) : null;
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          for (final entry in _pageStacks.entries)
-            Offstage(
-              offstage: entry.key != _selectedRoute,
-              child: HeroControllerScope(
-                controller: MaterialApp.createMaterialHeroController(),
-                child: Navigator(
-                  key: _keys[entry.key]!,
-                  requestFocus: entry.key == _selectedRoute,
-                  pages: [...entry.value],
-                  onPopPage: (route, result) {
-                    if (entry.value.last.onWillPop != null &&
-                        !entry.value.last.onWillPop!.call()) {
-                      return entry.value.last.onWillPop!.call();
-                    }
-                    if (!route.didPop(result)) {
-                      return false;
-                    }
-                    if (_pageStacks[_selectedRoute]!.length > 1) {
-                      _pageStacks[_selectedRoute]?.removeLast();
-                    }
-                    notifyListeners();
-                    return true;
-                  },
-                ),
-              ),
+    return Navigator(
+      key: _rootNavigatorKey,
+      pages: [
+        XtPage(
+          child: Scaffold(
+            body: Stack(
+              children: [
+                for (final entry in _pageStacks.entries)
+                  Offstage(
+                    offstage: entry.key != _selectedRoute,
+                    child: HeroControllerScope(
+                      controller: MaterialApp.createMaterialHeroController(),
+                      child: Navigator(
+                        key: _keys[entry.key]!,
+                        requestFocus: entry.key == _selectedRoute,
+                        pages: [...entry.value],
+                        onPopPage: (route, result) {
+                          if (entry.value.last.onWillPop != null && !entry.value.last.onWillPop!.call()) {
+                            return entry.value.last.onWillPop!.call();
+                          }
+                          if (!route.didPop(result)) {
+                            return false;
+                          }
+                          if (_pageStacks[_selectedRoute]!.length > 1) {
+                            _pageStacks[_selectedRoute]?.removeLast();
+                          }
+                          notifyListeners();
+                          return true;
+                        },
+                      ),
+                    ),
+                  ),
+              ],
             ),
-        ],
-      ),
-      bottomNavigationBar: navBar,
+            bottomNavigationBar: navBar,
+          ),
+        ),
+      ],
+      onPopPage: (route, result) {
+        return false;
+      },
     );
   }
 }

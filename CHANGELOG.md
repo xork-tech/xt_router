@@ -1,3 +1,7 @@
+## 0.4.0
+
+* Added root navigator
+
 ## 0.3.0
 
 * Fixed missed hero controller issue
