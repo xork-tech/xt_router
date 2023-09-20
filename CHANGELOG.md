@@ -1,3 +1,7 @@
+## 0.6.0
+
+* Add didPop method
+
 ## 0.5.0
 
 * Fixed back button on android in modal page with root navigator

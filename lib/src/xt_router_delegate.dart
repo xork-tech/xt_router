@@ -91,6 +91,13 @@ class XtRouterDelegate<T> extends RouterDelegate<RouteInformation>
     notifyListeners();
   }
 
+  void didPop(Future<bool> Function(List<XtPage> currentPageStack) didPop) async {
+    if (await didPop(currentPageStack)) {
+      pop();
+      return this.didPop(didPop);
+    }
+  }
+
   bool pop() {
     if (currentPageStack.length > 1) {
       currentPageStack.removeLast();
